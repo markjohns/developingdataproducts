@@ -1,0 +1,149 @@
+---
+title       : Total Interest
+subtitle    : Total Interest Calculation Presentation
+author      : Mark Johns
+job         : 
+framework   : io2012        # {io2012, html5slides, shower, dzslides, ...}
+highlighter : highlight.js  # {highlight.js, prettify, highlight}
+hitheme     : tomorrow      # 
+url:
+  lib: ../../libraries
+  assets: ../../assets
+widgets     : [mathjax]            # {mathjax, quiz, bootstrap}
+mode        : standalone # {standalone, draft}
+knit        : slidify::knit2slides
+---
+
+## Interest Calculations
+ 
+#### You have a principal, for example a sum in a bank deposit, and your interest rate is a percent value. After a period of time has elapsed, you can calculate the interest as
+ 
+#### principal * rate/100
+ 
+#### This interest is added to the principal, and the new value of the deposit is
+ 
+#### principal + principal * rate/100
+ 
+#### Compound interest means that the interest is added back to the principal sum, so that interest is earned on the resulting sum (principal + interest) during the subsequent compounding period. The interest for the subsequent period is based on the principal sum after the end of the first period. The same is true for all subsequent periods.
+
+
+
+
+--- .class #id 
+
+## Example
+ 
+##### The principal is $1000, the interst rate 1%, and the deposit is for 3 periods
+### First period
+
+#### interest = 1000*(1/100) = 10
+#### principal = 1000*(1 + 1/100) = 1010
+
+### Second period
+
+#### interest = 10 + 1010*(1/100) = 20.10
+#### principal = 1010*(1 + 1/100) = 1020.10
+
+### Third period 
+
+#### interest = 20.10 + 1020.10*(1/100) = 30.301
+#### principal = 1020.10*(1 + 1/100) = 1030.301
+
+--- .class #id 
+
+## Formula for Compound Interest
+
+##### The formula used to calculate standard compound interest is as follows:
+total interest = principal * ($(1+rate/100)^0$ + $(1+rate/100)^1$ + $(1+rate/100)^2$ + ...+ $(1+rate/100)^{(n-1)}$) * rate/100)
+
+##### total interest is the final amount of interest you have at the end of the period.
+
+##### principal is the initial amount you deposit.
+
+##### rate is the interest rate.
+
+##### n is the number of periods.
+
+##### If you deposit $1,000 at 1% over 6 periods, you get the following result:
+ 
+```{r echo=FALSE}
+initialvalue <- 1000
+rate <- 1
+n <- 6
+res <- initialvalue * sum((1+rate/100)^(0:(n-1))*rate/100)
+```
+##### Total interest = `r res`
+##### Reference 
+[Shiny Application Code] (https://github.com/markjohns/developingdataproducts)
+
+--- .class #id 
+
+## Chart
+
+```{r echo=FALSE}
+initialvalue <- 1000
+rate <- 1
+n <- 6
+res <- initialvalue * sum((1+rate/100)^(0:(n-1))*rate/100)
+```
+
+```{r echo=FALSE}
+initialvalue <- 1000
+rate <- 1
+n <- 6
+res <- initialvalue * sum((1+rate/100)^(0:(n-1))*rate/100)
+##```
+
+##```{r echo=FALSE}
+x <- seq(1:6)
+y <- vector("numeric",length= 6)
+y[1] <- initialvalue * sum((1+rate/100)^(0:(x[1]-1))*rate/100)
+y[2] <- initialvalue * sum((1+rate/100)^(0:(x[2]-1))*rate/100)
+y[3] <- initialvalue * sum((1+rate/100)^(0:(x[3]-1))*rate/100)
+y[4] <- initialvalue * sum((1+rate/100)^(0:(x[4]-1))*rate/100)
+y[5] <- initialvalue * sum((1+rate/100)^(0:(x[5]-1))*rate/100)
+y[6] <- initialvalue * sum((1+rate/100)^(0:(x[6]-1))*rate/100)
+
+df1 <-as.data.frame(cbind(x,y,rate))
+
+rate <- 2
+y <- vector("numeric",length= 6)
+y[1] <- initialvalue * sum((1+rate/100)^(0:(x[1]-1))*rate/100)
+y[2] <- initialvalue * sum((1+rate/100)^(0:(x[2]-1))*rate/100)
+y[3] <- initialvalue * sum((1+rate/100)^(0:(x[3]-1))*rate/100)
+y[4] <- initialvalue * sum((1+rate/100)^(0:(x[4]-1))*rate/100)
+y[5] <- initialvalue * sum((1+rate/100)^(0:(x[5]-1))*rate/100)
+y[6] <- initialvalue * sum((1+rate/100)^(0:(x[6]-1))*rate/100)
+
+df2 <-as.data.frame(cbind(x,y,rate))
+
+data <- rbind(df1,df2)
+
+rate <- 3
+y <- vector("numeric",length= 6)
+y[1] <- initialvalue * sum((1+rate/100)^(0:(x[1]-1))*rate/100)
+y[2] <- initialvalue * sum((1+rate/100)^(0:(x[2]-1))*rate/100)
+y[3] <- initialvalue * sum((1+rate/100)^(0:(x[3]-1))*rate/100)
+y[4] <- initialvalue * sum((1+rate/100)^(0:(x[4]-1))*rate/100)
+y[5] <- initialvalue * sum((1+rate/100)^(0:(x[5]-1))*rate/100)
+y[6] <- initialvalue * sum((1+rate/100)^(0:(x[6]-1))*rate/100)
+
+df3 <-as.data.frame(cbind(x,y,rate))
+
+data <- rbind(data,df3)
+data$rate <-as.factor(data$rate)
+
+
+library(ggplot2)
+
+g <- ggplot(data, aes(x,y))
+p <- g + geom_point()
+q <- p + facet_grid(. ~ rate) + labs(title = "Total Interest Chart for rates 1, 2 and 3") + labs(x = "Period", y = "Total Interest")
+
+```
+### 
+```{r echo=FALSE, fig.width=8,fig.height=6}
+print(q)
+```
+
+--- .class #id 
